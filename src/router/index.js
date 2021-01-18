@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Compute1d from '../views/Computed.vue'
+import propsRules from '../views/propsRules.vue'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/computed',
     name: 'Computed',
     component: Compute1d
+  },
+  {
+    path: '/props',
+    name: 'propsRules',
+    component: propsRules
   },
 ]
 
