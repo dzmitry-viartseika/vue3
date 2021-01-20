@@ -1,6 +1,6 @@
 <template>
   <h2>
-    Props Parent
+    Props Parent posts={{ posts }}
     <div class="list"  v-for="item in arrList" :key="item">
       <propsItem  :item="item"/>
     </div>
@@ -9,6 +9,7 @@
 
 <script>
 import propsItem from '@/views/propsItem'
+import { inject } from 'vue';
 
 export default {
   name: "propsList",
@@ -23,6 +24,11 @@ export default {
   },
   setup(props) {
     console.log('props', props.arrList);
+    const posts = inject('posts')
+
+    return {
+      posts,
+    }
   }
 }
 </script>

@@ -16,20 +16,29 @@
     objReactive={{ objReactive.name }}: {{ objReactive.age }}
   </div>
   <button @click="updateAge">Click +</button>
+  <button @click="proceedTo('/computed')">Router</button>
+  <propsList />
 </template>
 
 <script>
 
-import { ref, reactive } from 'vue';
+import { ref, reactive, provide } from 'vue';
+import { useRouter } from 'vue-router'
+import propsList from '@/views/propsList';
 
 export default {
   name: 'Home',
+  components: {
+    propsList,
+  },
   setup() {
 
     // ref лучше использовать для реактивности. Преимущества что можно примитивные значения делать реативными
     console.log('wertey');
     const test = 'wertey';
     const date = ref(100);
+    const posts = ref([]);
+    const error = ref(null)
 
     const obj = ref({
       name: 'Dmitry',
@@ -40,6 +49,30 @@ export default {
       name: 'test',
       age: 10000
     })
+
+    const router = useRouter();
+
+    const proceedTo = (route) => {
+      console.log('route', route)
+      router.push(route)
+    }
+
+    const load = async () => {
+      try {
+        const data = await fetch('http://localhost:3000/posts')
+        if(!data.ok) {
+          throw Error('no data avaliable')
+        }
+        posts.value = await data.json();
+      }
+      catch (err) {
+        error.value = err.message;
+      }
+    }
+
+    load()
+
+    provide('posts', posts)
 
     const reactiveValue = ref('hello world')
 
@@ -67,6 +100,9 @@ export default {
       obj,
       objReactive,
       updateAge,
+      load,
+      posts,
+      proceedTo,
     }
   }
 }
